@@ -15,17 +15,25 @@
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        //Height of the tree using recursion - better approach
-        return helper(root);
-    }
-    public int helper(TreeNode root){
-        if(root == null) return 0;
-        
-        //find height of left
-        int left = helper(root.left);
-        //find height of right
-        int right = helper(root.right);
-        //curr node plus max(left height,rigth height)
-        return 1+Integer.max(left,right);
-    }
+        //height of the tree using level order traversal
+        if(root == null) return 0;   
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int height = 0;
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            for(int i=0;i<size;i++){
+                TreeNode node = queue.poll();
+                if(node.left!=null){
+                    queue.add(node.left);
+                }
+                if(node.right!=null){
+                    queue.add(node.right);
+                }
+            }
+            height++;
+        }
+
+        return height;
+    }   
 }
