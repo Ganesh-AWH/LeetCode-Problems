@@ -16,7 +16,7 @@
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
-
+        // level order traversal 
         Queue<TreeNode> queue = new LinkedList<>();
         if(root == null) return ans;
 
