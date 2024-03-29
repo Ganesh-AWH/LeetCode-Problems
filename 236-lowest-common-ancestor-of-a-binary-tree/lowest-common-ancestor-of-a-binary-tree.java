@@ -10,6 +10,10 @@
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         //naive approach
+        /*
+            get the paths for both the given nodes as list
+            iterate both the list simultaneously if list1 != list2 then its previous will be ans(lca)
+         */
         List<TreeNode> path1 = new ArrayList<>();
         List<TreeNode> path2 = new ArrayList<>();
         getPath(root,p,path1);
