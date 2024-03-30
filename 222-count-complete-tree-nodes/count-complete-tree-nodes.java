@@ -14,13 +14,35 @@
  * }
  */
 class Solution {
+    //using complete binary tree property we can reduce the time complexity
+    //for a node left height and right height is equal then use this formula 2^h - 1;
     public int countNodes(TreeNode root) {
-        //naive approach
         if(root == null) return 0;
 
-        int left = countNodes(root.left);
-        int right = countNodes(root.right);
+        int leftHeight = findLeftHeight(root);
+        int rightHeight = findRightHeight(root);
 
-        return 1 + left + right;
+        if(leftHeight == rightHeight){
+            //it is 2 power using bit manipulation - 
+            return ((2<<(leftHeight))-1);
+        }
+        else 
+            return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+    public int findLeftHeight(TreeNode node){
+        int height = 0;
+        while(node.left!=null){
+            height++;
+            node = node.left;
+        }
+        return height;
+    }
+    public int findRightHeight(TreeNode node){
+        int height = 0;
+        while(node.right!=null){
+            height++;
+            node = node.right;
+        }
+        return height;
     }
 }
