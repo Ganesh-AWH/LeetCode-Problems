@@ -10,34 +10,35 @@
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         List<Integer> ans = new ArrayList<>();
+
+        //for every node find parent node
         Map<TreeNode,TreeNode> parents = new HashMap<>();
-        //getting parents for every node
-        getParents(root,parents);
+        findParents(root,parents);
+        // System.out.println(parents.size());
+        //finding the distance
+        int distance = 0;
+        //making visted nodes
         Set<TreeNode> set = new HashSet<>();
         Queue<TreeNode> queue = new LinkedList<>();
-        int distance = 0;
-        set.add(target);
         queue.add(target);
+        set.add(target);
         while(!queue.isEmpty()){
             int size = queue.size();
             if(distance == k) break;
-            distance ++;
+            distance++;
             for(int i=0;i<size;i++){
                 TreeNode node = queue.poll();
-                //going left to the target
                 if(node.left!=null && !set.contains(node.left)){
-                    set.add(node.left);
                     queue.add(node.left);
+                    set.add(node.left);
                 }
-                //going right to the target
                 if(node.right!=null && !set.contains(node.right)){
-                    set.add(node.right);
                     queue.add(node.right);
+                    set.add(node.right);
                 }
-                //parent of the target
                 if(parents.get(node)!=null && !set.contains(parents.get(node))){
-                    set.add(parents.get(node));
                     queue.add(parents.get(node));
+                    set.add(parents.get(node));
                 }
             }
         }
@@ -46,10 +47,10 @@ class Solution {
         }
         return ans;
     }
-    public void getParents(TreeNode root,Map<TreeNode,TreeNode> map){
+    public void findParents(TreeNode root,Map<TreeNode,TreeNode> map){
+        //use level order traversal for finding parents
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
-        //for root there no parent
         map.put(root,null);
         while(!queue.isEmpty()){
             int size = queue.size();
@@ -59,11 +60,13 @@ class Solution {
                     map.put(node.left,node);
                     queue.add(node.left);
                 }
-                if(node.right != null){
+                if(node.right!=null){
                     map.put(node.right,node);
                     queue.add(node.right);
                 }
             }
         }
+
+
     }
 }
