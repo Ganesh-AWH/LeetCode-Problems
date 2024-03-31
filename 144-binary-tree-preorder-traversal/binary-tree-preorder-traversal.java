@@ -31,7 +31,7 @@ class Solution {
                 while(prev.right!=null && prev.right != curr){
                     prev = prev.right;
                 }
-                //instead pointing null make thread to current
+                //instead pointing null make thread to current and add it to the ans because it  is the root 
                 if(prev.right == null){
                     prev.right = curr;
                     ans.add(curr.val);
