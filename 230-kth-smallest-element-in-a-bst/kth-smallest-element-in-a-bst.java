@@ -15,17 +15,18 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        //Naive approach
+        //better approach
+        //basically inorder traversal of binary search results in ascending order
+        //inorder left  parent right
         List<Integer> list = new ArrayList<>();
-        helper(root,list);
-        Collections.sort(list);
+        inorder(root,list);
         return list.get(k-1);
     }
-    public void helper(TreeNode root,List<Integer> list){
+    public void inorder(TreeNode root,List<Integer> list){
         if(root == null) return;
 
+        inorder(root.left,list);
         list.add(root.val);
-        helper(root.left,list);
-        helper(root.right,list);
+        inorder(root.right,list);
     }
 }
