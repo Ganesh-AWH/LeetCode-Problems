@@ -15,18 +15,39 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        //optimized approach
-        //one is used for storing answer and another is for count 
-        int []ans = new int[2];
-        helper(root,k,ans);
-        return ans[0];
-    }
-    public void helper(TreeNode root,int k,int []ans){
-        if(root == null) return;
+        //using morris algorithm for inorder traversal
+        TreeNode curr = root;
+        int count =  0;
+        int ans = -1;
+        while(curr!=null){
+            //case -1 if left is null then print root and go for right
+            if(curr.left == null){
+                count++;
+                if(count == k) return curr.val;
+                curr = curr.right;
+            }
+            //case -2 go for left and point thread 
+            else{
+                TreeNode prev = curr.left;
+                while(prev.right!=null && prev.right != curr){
+                    prev = prev.right;
+                }
+                //instead pointing null make thread to current
+                if(prev.right == null){
+                    prev.right = curr;
+                    curr = curr.left;
+                }
+                //this indicates there already a thread
+                else{
+                    //remove the thread
+                    prev.right = null;
+                    count++;
+                    if(count == k) return curr.val;
+                    curr = curr.right;
+                }
+            }
+        }
 
-        helper(root.left,k,ans);
-        ans[1]++;
-        if(ans[1] == k) ans[0] = root.val;
-        helper(root.right,k,ans);
+        return ans;
     }
 }
