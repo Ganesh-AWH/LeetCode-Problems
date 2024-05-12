@@ -9,37 +9,23 @@
  */
 
 class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        List<TreeNode> path1 = new ArrayList<>();
-        List<TreeNode> path2 = new ArrayList<>();
-        getPath(root,p,path1);
-        getPath(root,q,path2);
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
+        //optimal solution
+        // check whether root node is smaller than both p and q if it is the go for left
+        // if both nodes greater then go for right
+        //else there is separation then root node is answer
 
-        TreeNode ans = null;
-        int i=0;
-        while(i<path1.size() && i<path2.size()){
-            if(path1.get(i) != path2.get(i)){
-                break;
+        TreeNode temp = root;
+        while(temp!=null){
+            if(temp.val > p.val && temp.val > q.val){
+                temp = temp.left;
             }
-            ans = path1.get(i);
-            i++;
+            else if(temp.val < p.val && temp.val < q.val){
+                temp = temp.right;
+            }else{
+                return temp;
+            }
         }
-        return ans;
-    }
-    public void getPath(TreeNode root,TreeNode dest,List<TreeNode> paths){
-        if(root == null) return;
-
-        if(root.val == dest.val){
-            paths.add(root);
-            return;
-        }
-
-        if(root.val > dest.val){
-            paths.add(root);
-            getPath(root.left,dest,paths);
-        }else{
-            paths.add(root);
-            getPath(root.right,dest,paths);
-        }
+        return null;
     }
 }
