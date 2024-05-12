@@ -15,6 +15,7 @@
  */
 class Solution {
     public TreeNode bstFromPreorder(int[] preorder) {
+        //optimal solution
         int []index = new int[1];
         return buildTree(preorder,index,Integer.MAX_VALUE);
     }
