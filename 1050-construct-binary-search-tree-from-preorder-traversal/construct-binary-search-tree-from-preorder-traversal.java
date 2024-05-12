@@ -15,18 +15,30 @@
  */
 class Solution {
     public TreeNode bstFromPreorder(int[] preorder) {
-        //optimal solution
-        int []index = new int[1];
-        return buildTree(preorder,index,Integer.MAX_VALUE);
+        //better solution
+        //solving the problem using construct binary tree from preorder and inorder 
+        //in bst inorder will be ascending order
+        int []inorder = Arrays.copyOf(preorder,preorder.length);
+        Arrays.sort(inorder);
+
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<inorder.length;i++){
+            map.put(inorder[i],i);
+        }
+        
+        return buildTree(preorder,0,preorder.length - 1,0,inorder.length - 1,map);
     }
-    public TreeNode buildTree(int []preorder,int []index,int upperBound){
-        if(index[0] >= preorder.length || preorder[index[0]] > upperBound) return null;
+    public TreeNode buildTree(int []preorder,int preStart,int preEnd,int inStart,int inEnd,Map<Integer,Integer> map){
+        if(preStart > preEnd || inStart > inEnd) return null;
 
-        TreeNode newNode = new TreeNode(preorder[index[0]]);
-        index[0]++;
-        newNode.left = buildTree(preorder,index,newNode.val);
-        newNode.right = buildTree(preorder,index,upperBound);
+        TreeNode newNode = new TreeNode(preorder[preStart]);
 
-        return newNode;
+        int index = map.get(newNode.val);
+        int noeLeft = index - inStart;
+
+        newNode.left = buildTree(preorder,preStart+1,preStart+noeLeft,inStart,index-1,map);
+        newNode.right = buildTree(preorder,preStart+noeLeft+1,preEnd,index+1,inEnd,map);
+
+        return newNode; 
     }
 }
