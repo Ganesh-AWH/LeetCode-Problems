@@ -13,21 +13,59 @@
  *     }
  * }
  */
+public class BSTIterator{
+    Stack<TreeNode> stack;
+    boolean reverse;
+    // isReverse -> true -> then class is before(); 
+    // isReverse -> false -> then class is next();
+    BSTIterator(TreeNode root,boolean isReverse){
+        stack = new Stack<>();
+        reverse = isReverse;
+        pushAll(root);
+    }
+
+    public int next(){
+        TreeNode current = stack.pop();
+        if(reverse == false){
+            pushAll(current.right);
+        }else{
+            pushAll(current.left);
+        }
+
+        return current.val;
+    }
+
+    public boolean hasNext(){
+        return !stack.isEmpty();
+    }
+
+    private void pushAll(TreeNode root){
+        while(root != null){
+            stack.push(root);
+            if(reverse == true){
+                root = root.right;
+            }else{
+                root = root.left;
+            }
+        }
+    } 
+}
 class Solution {
     public boolean findTarget(TreeNode root, int k) {
-        Set<Integer> set = new HashSet<>();
-        traversal(root,set);
-        System.out.println(set);
-        for(int i:set){
-            if(set.contains(k-i) && i != k-i) return true;
-        }
-        return false;
-    }
-    public void traversal(TreeNode root,Set<Integer> set){
-        if(root == null) return;
+        //optimal solution using bst iterator
+        BSTIterator l = new BSTIterator(root,false);
+        BSTIterator r = new BSTIterator(root,true);
 
-        set.add(root.val);
-        traversal(root.left,set);
-        traversal(root.right,set);
+        int i = l.next();
+        int j = r.next();
+
+        while(i<j){
+            if(i+j == k) return true;
+
+            if(i+j < k) i = l.next();
+            else j = r.next();
+        }
+
+        return false;
     }
 }
