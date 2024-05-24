@@ -1,29 +1,24 @@
 class Solution {
     public int findContentChildren(int[] g, int[] s) {
-        //solving using gready approach 
-        //makes series of decision based on certain criteria
         Arrays.sort(g);
         Arrays.sort(s);
 
-        // use two pointers
-        int i=0;
-        int j=0;
-
-        while(i<g.length){
-            //if the size of cookes cannot able to satisfy the lower greedy child then increase the size
-            while(j<s.length && s[j] < g[i]){
-                j++;
+        int l = 0;
+        int r = 0;
+        int count = 0;
+        while(l<g.length){
+            while(r<s.length && g[l] > s[r]){
+                r++;
             }
-            if(j<s.length){
-                //the childrens are satisfied
-                i++;
-                j++;
+            if(r<s.length){
+                count++;
+                r++;
+                l++;
             }else{
                 break;
             }
-            
         }
 
-        return i;
+        return count;
     }
 }
