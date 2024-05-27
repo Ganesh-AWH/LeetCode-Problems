@@ -1,27 +1,31 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        //solving without creating adjacency list
+        // solving using bfs - breadth first search
         int n = isConnected.length;
         int m = isConnected[0].length;
-
         boolean []visited = new boolean[n];
         int provinces = 0;
-        for(int i=0;i<n;i++){
 
+        for(int i=0;i<n;i++){
             if(!visited[i]){
                 provinces++;
-                dfs(i,visited,isConnected);
+                Queue<Integer> queue = new LinkedList<>();
+                queue.add(i);
+                visited[i] = true;
+                while(!queue.isEmpty()){
+                    Integer x = queue.poll();
+                    for(int j=0;j<m;j++){
+                        if(isConnected[x][j] == 1 && !visited[j]){
+                            queue.add(j);
+                            visited[j] = true;
+                        }
+                    }
+                }
             }
+            
         }
-        return provinces;
-    }
-    public void dfs(int node,boolean []visited,int [][]isConnected){
-        visited[node] = true;
 
-        for(int i=0;i<isConnected[0].length;i++){
-            if(isConnected[node][i] == 1 && !visited[i]){
-                dfs(i,visited,isConnected);
-            }
-        }
+
+        return provinces;
     }
 }
