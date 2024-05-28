@@ -1,26 +1,27 @@
 class Solution {
     public long maximumValueSum(int[] nums, int k, int[][] edges) {
-        long total = 0;
-        for (int num : nums) {
-            total += num;
+        long ans = 0;
+
+        Integer []diff = new Integer[nums.length];
+        long sum = 0;
+        for(int i=0;i<nums.length;i++){
+            sum += nums[i];
+            //find the difference (num ^ k) - num;
+            diff[i] = (nums[i] ^ k) - nums[i];
         }
 
-        long totalDiff = 0;
-        long diff;
-        int positiveCount = 0;
-        long minAbsDiff = Long.MAX_VALUE;
-        for (int num : nums) {
-            diff = (num ^ k) - num;
-
-            if (diff > 0) {
-                totalDiff += diff;
-                positiveCount++;
+        //sort in descending order 
+        Arrays.sort(diff,(a,b)->b-a);
+        //choose pair wise element that should be in positive
+        int positivePairs = 0;
+        for(int i=0;i<diff.length-1;i+=2){
+            // if(i+1 == diff.length) break;
+            int pair = diff[i] + diff[i+1];
+            if(pair > 0){
+                sum += pair;
             }
-            minAbsDiff = Math.min(minAbsDiff, Math.abs(diff));
-        }
-        if (positiveCount % 2 == 1) {
-            totalDiff -= minAbsDiff;
-        }
-        return total + totalDiff;
+        } 
+
+        return sum;
     }
 }
