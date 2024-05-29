@@ -1,25 +1,29 @@
 class Solution {
     int [][]directions = new int[][]{
-        {0,1},{0,-1},{-1,0},{1,0}
+        {0,1},{1,0},{-1,0},{0,-1}
     };
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        //mark the initial color 
+        //solving using bfs algorithm
         int n = image.length;
         int m = image[0].length;
         int initial = image[sr][sc];
-        dfs(image,sr,sc,initial,color,n,m);
-
-        return image;
-    }
-    public void dfs(int [][]image,int i,int j,int initial,int newColor,int n,int m){
-        image[i][j] = newColor;
-
-        for(int []dir:directions){
-            int nI = i + dir[0];
-            int nJ = j + dir[1];
-            if(nI>=0 && nJ>=0 && nI<n && nJ<m && image[nI][nJ] != newColor && image[nI][nJ] == initial){
-                dfs(image,nI,nJ,initial,newColor,n,m);
+        int [][]ans = image;
+        Queue<int []> queue = new LinkedList<>();
+        queue.add(new int[]{sr,sc});
+        while(!queue.isEmpty()){
+            int []indices = queue.poll();
+            int x = indices[0];
+            int y = indices[1];
+            ans[x][y] = color;
+            for(int []dir:directions){
+                int nx = x + dir[0];
+                int ny = y + dir[1];
+                if(nx>=0 && ny>=0 && nx<n && ny<m && image[nx][ny]!=color && image[nx][ny]==initial){
+                    queue.add(new int[]{nx,ny});
+                }
             }
         }
+
+        return ans;
     }
 }
