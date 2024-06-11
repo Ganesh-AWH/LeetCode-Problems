@@ -1,22 +1,18 @@
 class Solution {
     public int rob(int[] nums) {
         //Maximum Sum of Non-Adjacent Elements - Subsequences
-        //Recursion
+        //Tabulation
         int []dp = new int[nums.length];
-        Arrays.fill(dp,-1);
-        return recursion(nums.length-1,nums,dp); 
-    }
-    public int recursion(int index,int []nums,int []dp){
-        if(index == 0) return nums[index];
-
-        if(index < 0) return 0;
-
-        if(dp[index] != -1) return dp[index];
-                                        //no adjacent element
-        int pick = nums[index] + recursion(index-2,nums,dp);
-        int nonPick = 0 + recursion(index-1,nums,dp);
-
-        //constraint to find max sum
-        return dp[index] = Integer.max(pick,nonPick);
+        dp[0] = nums[0];
+        for(int i=1;i<nums.length;i++){
+            // int pick = nums[index] + dp[index-2];
+            int pick = nums[i];
+            if(i>1){
+                pick += dp[i-2];
+            }
+            int nonPick = 0 + dp[i-1];
+            dp[i] = Integer.max(pick,nonPick);
+        }
+        return dp[nums.length-1]; 
     }
 }
