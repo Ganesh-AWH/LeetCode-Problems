@@ -25,7 +25,7 @@ class Solution {
         for(int i=1;i<N;i++){
             boolean []curr = new boolean[sum+1];
             curr[0] = true;
-            for(int target=1;target<=sum;target++){
+            for(int target=0;target<=sum;target++){
                 boolean notTake  = prev[target];
                 boolean take = false;
                 if(arr[i] <= target){
