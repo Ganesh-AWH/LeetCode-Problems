@@ -1,31 +1,25 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
         if(amount == 0) return 0;
-        //memoization solution
+        //tabulation solution
         int n = coins.length;
         int [][]dp = new int[n][amount+1];
-        for(int []row:dp){
-            Arrays.fill(row,-1);
+        for(int a=0;a<=amount;a++){
+            if(a % coins[0] == 0) dp[0][a] = a/coins[0];
+            else dp[0][a] = (int)(1e9);
         }
-        int ans = recursion(n-1,amount,coins,dp);        
-        return ans >= 1e9 ? -1 : ans;
-    }
-    public int recursion(int index,int amount,int []coins,int [][]dp){
-        if(index == 0){
-            if(amount%coins[0] == 0){
-                return amount/coins[0];
-            }else{
-                return (int)(1e9);
+        for(int index=1;index<n;index++){
+            for(int a=0;a<=amount;a++){
+                int notPick = 0 + dp[index-1][a];
+                int pick = (int)(1e9);
+                if(coins[index] <= a){
+                        //picking up the coin so 1
+                    pick = 1 + dp[index][a-coins[index]];
+                }
+                dp[index][a] = Integer.min(notPick, pick);
             }
         }
-        if(dp[index][amount] != -1) return dp[index][amount];
-        //not picking up the coin so 0
-        int notPick = 0 + recursion(index-1,amount,coins,dp);
-        int pick = (int)(1e9);
-        if(coins[index] <= amount){
-            //picking up the coin so 1
-            pick = 1 + recursion(index,amount-coins[index],coins,dp);
-        }
-        return dp[index][amount] = Integer.min(notPick, pick);
+        int ans = dp[n-1][amount];        
+        return ans >= 1e9 ? -1 : ans;
     }
 }
