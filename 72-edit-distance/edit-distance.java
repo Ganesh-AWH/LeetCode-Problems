@@ -3,27 +3,28 @@ class Solution {
         // memoization solution
         int n = word1.length();
         int m = word2.length();
-        int [][]dp = new int[n][m];
+        //since the base in recursion going negative shifting the index for tabulation method
+        int [][]dp = new int[n+1][m+1];
         for(int []row: dp){
             Arrays.fill(row,-1);
         }
-        return recursion(n-1, m-1, word1, word2, dp);
+        return recursion(n, m, word1, word2, dp);
     }
     public int recursion(int i, int j, String word1, String word2, int [][]dp){
         //base case
         // str1 = "" | str2 = ro
-        if(i<0){
+        if(i == 0){
             // to convert empty string to "ro" we need to insert 2 characters
-            return j+1;
+            return j;
         }
         //str1 = hor | str2 = ""
-        if(j<0){
-            return i+1;
+        if(j == 0){
+            return i;
         }
 
         if(dp[i][j] != -1) return dp[i][j];
         //what if both character matches
-        if(word1.charAt(i) == word2.charAt(j)){
+        if(word1.charAt(i-1) == word2.charAt(j-1)){
             //since we are not performing any operaion so 0
             return dp[i][j] = 0 + recursion(i-1, j-1, word1, word2, dp);
         }
