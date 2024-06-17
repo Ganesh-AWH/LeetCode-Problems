@@ -1,28 +1,24 @@
 class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        //recursion solution
-        int [][]dp = new int[n][2];
-        for(int []row: dp){
-            Arrays.fill(row, -1);
+        //tabulation solution
+        int [][]dp = new int[n+2][2];
+        for(int index=n-1; index>=0; index--){
+            for(int buy=0; buy<=1; buy++){
+                int profit = 0;
+                if(buy == 1){
+                    int take = -prices[index] + dp[index+1][0];
+                    int notTake = 0 + dp[index+1][1];
+                    profit = Integer.max(notTake , take);
+                }
+                else{
+                    int take = prices[index] + dp[index+2][1];
+                    int notTake = 0 + dp[index+1][0];
+                    profit = Integer.max(notTake , take);
+                }
+                dp[index][buy] = profit;
+            }
         }
-        return recursion(0, 1, prices, dp);
-    }
-    public int recursion(int index, int buy, int []prices, int [][]dp){
-        //base case
-        if(index >= prices.length) return 0; 
-        if(dp[index][buy] != -1) return dp[index][buy];
-        int profit = 0;
-        if(buy == 1){
-            int take = -prices[index] + recursion(index+1, 0, prices, dp);
-            int notTake = 0 + recursion(index+1, 1, prices, dp);
-            profit = Integer.max(notTake , take);
-        }
-        else{
-            int take = prices[index] + recursion(index+2, 1, prices, dp);
-            int notTake = 0 + recursion(index+1, 0, prices, dp);
-            profit = Integer.max(notTake , take);
-        }
-        return dp[index][buy] = profit;
+        return dp[0][1];
     }
 }
