@@ -1,32 +1,26 @@
 class Solution {
-    // refer : https://leetcode.com/bk2444/
     public int lengthOfLIS(int[] nums) {
-        //monotonic stack and binary search
-        // If we get a number that is greater than the last number in stack: We append it.
-        // Otherwise, we find the first number that is >= num and insert in that position
-        List<Integer> monoStack = new ArrayList<>();
-        for(int i=0;i<nums.length;i++){
-            int num = nums[i];
-            if(monoStack.isEmpty() || monoStack.get(monoStack.size()-1) < num){
-                monoStack.add(num);
-            }else{
-                //binary search to search next greates element int the stack
-                int index = 0;
-                int s = 0;
-                int e = monoStack.size()-1;
-                while(s<=e){
-                    int mid = (s+e)/2;
-                    if(monoStack.get(mid) >= num){
-                        index = mid;
-                        e = mid-1;
-                    }else{
-                        s = mid+1;
-                    }
-                }
-                monoStack.set(index,num);
-            }
+        //Memoization solution
+        int n = nums.length;
+                            //n+1 because of index is going negative
+        int [][]dp = new int[n][n+1];
+        for(int []row: dp) Arrays.fill(row, -1);
+        return recursion(0, -1, nums, dp);
+    }
+    public int recursion(int index, int prevIndex, int []nums, int [][]dp){
+        //base case
+        if(index == nums.length) return 0;
+        //not taking the element
+        if(dp[index][prevIndex+1] != -1) return dp[index][prevIndex+1];
+        int notPick = 0 + recursion(index+1, prevIndex, nums, dp);
+        //taking the element
+                            //since subsequence should be increasing
+        int pick = Integer.MIN_VALUE;
+        if(prevIndex == -1 || nums[prevIndex] < nums[index]){
+                                            //marking the index as previous
+            pick = 1 + recursion(index+1, index, nums, dp);
         }
 
-        return monoStack.size();
+        return dp[index][prevIndex+1] = Integer.max(pick, notPick);
     }
 }
