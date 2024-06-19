@@ -1,6 +1,6 @@
 class Solution {
     public int minCost(int n, int[] cuts) {
-        //recursive approach
+        // tabulation approach
         List<Integer> list = new ArrayList<>();
         list.add(0);
         for(int i: cuts) list.add(i);
@@ -8,23 +8,20 @@ class Solution {
         Collections.sort(list);
         
         int len = cuts.length;
-        int [][]dp = new int[len+1][len+1];
-        for(int []row: dp) Arrays.fill(row, -1);
+        int [][]dp = new int[len+2][len+2];
 
-        return recursion(1, list.size()-2, list, dp);
-    }
-    public int recursion(int i, int j, List<Integer> cuts, int [][]dp){
-        //base case
-        if(i > j) return 0;
-
-        if(dp[i][j] != -1) return dp[i][j];
-        // partition
-        int mini = Integer.MAX_VALUE;
-        for(int k=i; k<=j; k++){
-            int cost = cuts.get(j+1) - cuts.get(i-1) + recursion(i, k-1, cuts, dp) +
-            recursion(k+1, j, cuts, dp);
-            mini = Integer.min(mini, cost); 
+        int m = list.size();
+        for(int i=m-2; i>=1; i--){
+            for(int j=1; j<=m-2; j++){
+                if(i > j) continue;
+                int mini = Integer.MAX_VALUE;
+                for(int k=i; k<=j; k++){
+                    int cost = list.get(j+1) - list.get(i-1) + dp[i][k-1] + dp[k+1][j];
+                    mini = Integer.min(mini, cost); 
+                }
+                dp[i][j] = mini;
+            }
         }
-        return dp[i][j] = mini;
+        return dp[1][m-2];
     }
 }
