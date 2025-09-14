@@ -1,0 +1,9 @@
+// Last updated: 9/14/2025, 9:18:21 AM
+import java.math.*;
+class Solution {
+    public String multiply(String num1, String num2) {
+        BigInteger  n1 = new BigInteger(num1);
+        BigInteger  n2 = new BigInteger(num2);
+        return n1.multiply(n2).toString();
+    }
+}
