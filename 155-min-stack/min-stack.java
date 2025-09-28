@@ -1,19 +1,19 @@
 class Pair{
     int val;
     int min;
-    public Pair(int val, int min){
+    //constructor
+    Pair(int val, int min){
         this.val = val;
         this.min = min;
     }
 }
 class MinStack {
-    Stack<Pair> stack;
-
+    Stack<Pair> stack; 
     public MinStack() {
         stack = new Stack<>();
     }
     
-    public void push(int val) {
+    public void push(int val) {       
         if(stack.isEmpty()){
             Pair p = new Pair(val, val);
             stack.push(p);
@@ -21,7 +21,7 @@ class MinStack {
             Pair top = stack.peek();
             int min = Integer.min(val, top.min);
             Pair p = new Pair(val, min);
-            stack.push(p);  
+            stack.push(p);
         }
     }
     
