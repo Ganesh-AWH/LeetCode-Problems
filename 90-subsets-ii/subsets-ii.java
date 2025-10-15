@@ -5,18 +5,22 @@ class Solution {
         findSubset(0, nums, new ArrayList<>(), ans);
         return ans;
     }
-    public static void findSubset(int index, int []arr, List<Integer> temp, List<List<Integer>> ans){
-        if(index>=arr.length){
-            if(!ans.contains(temp))
-                ans.add(new ArrayList<>(temp));
+    public static void findSubset(int i, int []arr, List<Integer> temp, List<List<Integer>> ans){
+        if(i>=arr.length){
+            ans.add(new ArrayList<>(temp));
             return;
         }
 
-        
-        temp.add(arr[index]);
-        findSubset(index+1, arr, temp, ans);
-        
+        //pick the element
+        temp.add(arr[i]);
+        findSubset(i+1, arr, temp, ans);
+    
+        //not picking the element
         temp.remove(temp.size()-1);
-        findSubset(index+1, arr, temp, ans);
+        int next = i+1;
+        //skipping the duplicate element 
+        while(next<arr.length && arr[next] == arr[i]) next++;
+
+        findSubset(next, arr, temp, ans);
     }
 }
