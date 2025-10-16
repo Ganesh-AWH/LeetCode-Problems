@@ -1,26 +1,32 @@
 class Solution {
     public List<List<String>> partition(String s) {
         List<List<String>> ans = new ArrayList<>();
-        helper(s,0,ans,new ArrayList<>());
+        
+        findPartition(0, s, new ArrayList<>(), ans);
         return ans;
     }
-    private static void helper(String s,int index,List<List<String>> ans,List<String> temp){
-        if(index == s.length()){
+    public static void findPartition(int index, String str, List<String> temp, List<List<String>> ans){
+        if(index == str.length()){
             ans.add(new ArrayList<>(temp));
-            return;
         }
 
-        for(int i=index;i<s.length();i++){
-            if(isPalindrome(s,index,i)){
-                temp.add(s.substring(index,i+1));
-                helper(s,i+1,ans,temp);
+        for(int i=index; i<str.length(); i++){
+            String substr = str.substring(index, i+1);
+            if(isPalindrome(substr)){
+                temp.add(substr);
+                findPartition(i+1, str, temp, ans);
                 temp.remove(temp.size()-1);
             }
         }
+
     }
-    private static boolean isPalindrome(String str,int s,int e){
-        while(s<=e){
-            if(str.charAt(s++) != str.charAt(e--)) return false;
+    public static boolean isPalindrome(String str){
+        int i = 0;
+        int j = str.length() - 1;
+        while(i<j){
+            if(str.charAt(i) != str.charAt(j)) return false;
+            i++; 
+            j--;
         }
         return true;
     }
